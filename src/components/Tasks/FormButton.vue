@@ -3,7 +3,6 @@
         <span class="icon">
             <i :class="icon"></i>
         </span>
-        <span>{{ text }}</span>
     </button>
 </template>
 
@@ -22,9 +21,6 @@
             icon: {
                 type: String
             },
-            text: {
-                type: String
-            }
         },
         methods: {
             clicked(){

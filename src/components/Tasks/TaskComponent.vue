@@ -19,7 +19,7 @@ import ITask from '@/interfaces/ITasks';
 
 export default defineComponent({
     name: "TaskCompoenent",
-    components: { 
+    components: {
         StopwatchComponent,
         BoxComponent
     },
