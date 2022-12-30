@@ -13,7 +13,7 @@ import { defineComponent } from 'vue';
 import FormComponent from '../components/Tasks/FormComponent.vue'
 import TaskComponent from '../components/Tasks/TaskComponent.vue'
 import BoxComponent from '../components/Tasks/BoxComponent.vue'
-import ITask from '../interfaces/ITasks';
+import ITask from '../interfaces/ITask';
 
 export default defineComponent({
     name: 'TasksScreen',

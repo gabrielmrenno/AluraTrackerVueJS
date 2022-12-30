@@ -4,7 +4,7 @@
       <SideBar @themeChanged="changeTheme" />
     </div>
     <div class="column is-three-quarter content">
-      <router-view></router-view>
+      <RouterView></RouterView>
     </div>
   </main>
 </template>

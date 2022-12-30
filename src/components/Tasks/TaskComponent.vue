@@ -15,7 +15,7 @@
 import { defineComponent, PropType } from 'vue';
 import StopwatchComponent from './StopwatchComponent.vue';
 import BoxComponent from './BoxComponent.vue';
-import ITask from '@/interfaces/ITasks';
+import ITask from '@/interfaces/ITask';
 
 export default defineComponent({
     name: "TaskCompoenent",

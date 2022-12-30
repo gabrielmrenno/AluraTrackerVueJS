@@ -6,6 +6,22 @@
         <button class="button" @click="changeTheme">
             {{ textButton }}
         </button>
+        <nav class="panel mt-5">
+            <ul>
+                <li>
+                    <RouterLink to="/" class="link">
+                        <i class="fas fa-tasks"></i>
+                        Tarefas
+                    </RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/projetos" class="link">
+                        <i class="fas fa-project-diagram"></i>
+                        Tarefas
+                    </RouterLink>
+                </li>
+            </ul>
+        </nav>
     </header>
 </template>
 
@@ -47,6 +63,22 @@
         padding: 1rem;
 
         text-align: center;
+    }
+
+    .panel li {
+        margin: 8px 0;
+    }
+
+    .link {
+        color: #fff;
+    }
+
+    .link:hover {
+        color: #faf0ca;
+    }
+
+    .link.router-link-active {
+        color: #faf0ca
     }
 
     /* Layout mobile */
