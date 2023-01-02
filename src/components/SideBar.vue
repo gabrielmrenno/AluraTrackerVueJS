@@ -17,7 +17,7 @@
                 <li>
                     <RouterLink to="/projetos" class="link">
                         <i class="fas fa-project-diagram"></i>
-                        Tarefas
+                        Projetos
                     </RouterLink>
                 </li>
             </ul>
