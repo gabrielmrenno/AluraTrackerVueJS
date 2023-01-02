@@ -1,33 +1,37 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-        <div class="is-flex is-align-items-center is-justify-content-space-between">
-            <StopwatchComponent :time-in-seconds="timeInSeconds" />
-            <FormButton @clicked="play" icon="fas fa-play" :is-disable="stopwatchRunning"/>
-            <FormButton @clicked="pause" icon="fas fa-pause" :is-disable="!stopwatchRunning"/>
-            <FormButton @clicked="finish" icon="fas fa-stop" :is-disable="canPause"/>
-        </div>
+    <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <StopwatchComponent :time-in-seconds="timeInSeconds" />
+        <FormButton @clicked="play" icon="fas fa-play" :is-disable="stopwatchRunning" />
+        <FormButton @clicked="pause" icon="fas fa-pause" :is-disable="!stopwatchRunning" />
+        <FormButton @clicked="finish" icon="fas fa-stop" :is-disable="canPause" />
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent,  } from "vue";
 import StopwatchComponent from "./StopwatchComponent.vue";
 import FormButton from "./FormButton.vue";
 
 export default defineComponent({
     name: "TimerComponent",
-    emits:[
-        'inTimerFinished'
+    emits: [
+        'inTimerFinished',
+        'inTimerPlayed',
+        'inTimerPaused'
     ],
     components: {
         StopwatchComponent,
         FormButton
     },
-    data(){
-        return {
-            timeInSeconds: 0,
-            stopwatch: 0,
-            stopwatchRunning: false,
-            stopwatchPaused: false
+    props: {
+        timeInSeconds: {
+            type: Number,
+            required: true
+        },
+        stopwatchRunning: {
+            type: Boolean,
+            required: true
         }
     },
     computed: {
@@ -37,22 +41,13 @@ export default defineComponent({
     },
     methods: {
         play() {
-            this.stopwatchRunning = true;
-            this.stopwatchPaused = false;
-            this.stopwatch = setInterval(() => {
-                this.timeInSeconds++;
-            }, 1000)
+            this.$emit('inTimerPlayed');
         },
         finish() {
-            this.stopwatchRunning = false;
-            clearInterval(this.stopwatch);
             this.$emit('inTimerFinished', this.timeInSeconds);
-            this.timeInSeconds = 0;
         },
         pause() {
-            this.stopwatchRunning = false;
-            this.stopwatchPaused = true;
-            clearInterval(this.stopwatch);
+            this.$emit('inTimerPaused');
         }
     }
 })

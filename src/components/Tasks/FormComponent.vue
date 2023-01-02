@@ -8,18 +8,15 @@
                 <div class="select">
                     <select v-model="projectId">
                         <option value="">Selecione o projeto</option>
-                        <option
-                            :value="project.id"
-                            v-for="project in projects"
-                            :key="project.id"
-                        >
+                        <option :value="project.id" v-for="project in projects" :key="project.id">
                             {{ project.name }}
                         </option>
                     </select>
                 </div>
             </div>
             <div class="column">
-                <TimerComponent @in-timer-finished="finishtask" />
+                <TimerComponent @in-timer-finished="finishtask" @in-timer-paused="pauseTaks" @in-timer-played="playTaks"
+                    :stopwatch-running="stopwatchRunning" :time-in-seconds="timeInSeconds" />
             </div>
         </div>
     </div>
@@ -30,6 +27,8 @@ import { defineComponent, computed } from "vue";
 import TimerComponent from "./TimerComponent.vue";
 import { useStore } from "vuex";
 import { key } from "@/store";
+import { NOTIFICATE } from "@/store/mutationsTypes";
+import { NotificationType } from "@/interfaces/INotification";
 
 export default defineComponent({
     name: "FormComponent",
@@ -37,35 +36,65 @@ export default defineComponent({
     components: {
         TimerComponent
     },
-    data (){
+    data() {
         return {
             description: '',
-            projectId: ''
+            projectId: '',
+            timeInSeconds: 0,
+            stopwatch: 0,
+            stopwatchRunning: false,
+            stopwatchPaused: false
         }
     },
     methods: {
+        playTaks() {
+            this.stopwatchRunning = true;
+            this.stopwatchPaused = false;
+            this.stopwatch = setInterval(() => {
+                this.timeInSeconds++;
+            }, 1000)
+        },
         finishtask(timeInSeconds: number): void {
+            if (!this.projectId) {
+                this.store.commit(NOTIFICATE, {
+                    title: "Erro ao cadastrar a tarefa",
+                    text: "Para cadastrar uma tarefa, ela deve estar vinculada à um projeto",
+                    type: NotificationType.DANGER
+                });
+                this.stopwatchRunning = false;
+                clearInterval(this.stopwatch);
+                return;
+            }
             this.$emit('onSaveTask', {
                 timeInSeconds,
                 description: this.description,
                 project: this.projects.find(eachProject => eachProject.id === this.projectId)
             })
             this.description = '';
+            this.stopwatchRunning = false;
+            clearInterval(this.stopwatch);
+            this.timeInSeconds = 0;
+        },
+        pauseTaks() {
+            this.stopwatchRunning = false;
+            clearInterval(this.stopwatch);
         }
     },
-    setup () {
+    setup() {
         const store = useStore(key);
 
         return {
-            projects: computed(() => store.state.projects)
+            store,
+            projects: computed(() => store.state.projects),
+            notifications: computed(() => store.state.notifications)
         }
     }
 })
 </script>
 
 <style>
-    .form {
-        color: var(--text-primary);
-        background-color: var(--bg-primary);
-    }
+.form {
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+}
 </style>

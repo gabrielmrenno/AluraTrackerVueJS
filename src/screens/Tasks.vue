@@ -9,11 +9,13 @@
 </template>
   
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import FormComponent from '../components/Tasks/FormComponent.vue'
 import TaskComponent from '../components/Tasks/TaskComponent.vue'
 import BoxComponent from '../components/Tasks/BoxComponent.vue'
-import ITask from '../interfaces/ITask';
+import { ITask } from '../interfaces/ITask';
+import { useStore } from '@/store';
+import { ADD_TASK } from '@/store/mutationsTypes';
 
 export default defineComponent({
     name: 'TasksScreen',
@@ -22,11 +24,6 @@ export default defineComponent({
         TaskComponent,
         BoxComponent
     },
-    data() {
-        return {
-            tasks: [] as ITask[],
-        }
-    },
     computed: {
         listIsEmpty(): boolean {
             return this.tasks.length === 0
@@ -34,7 +31,14 @@ export default defineComponent({
     },
     methods: {
         saveTaskOnList(task: ITask) {
-            this.tasks.push(task);
+            this.store.commit(ADD_TASK, task);
+        }
+    },
+    setup () {
+        const store = useStore();
+        return {
+            store,
+            tasks: computed(() => store.state.tasks)
         }
     }
 });
