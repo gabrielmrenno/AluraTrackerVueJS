@@ -19,9 +19,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from '@/store';
-import { ADD_PROJECT, EDIT_PROJECT } from '@/store/mutationsTypes';
 import { NotificationType } from '@/interfaces/INotification';
 import { useNotifier } from '@/hooks/notifier';
+import { PATCH_PROJECT, POST_PROJECT } from '@/store/actionsTypes';
 
 export default defineComponent({
     name: "ProjectsForm",
@@ -44,14 +44,19 @@ export default defineComponent({
     methods: {
         saveForm() {
             if (this.id) {
-                this.store.commit(EDIT_PROJECT, {
+                this.store.commit(PATCH_PROJECT, {
                     id: this.id,
                     name: this.projectName
-                })
+                });
+                this.successResponse();
             } else {
-                this.store.commit(ADD_PROJECT, this.projectName);
+                this.store.dispatch(POST_PROJECT, this.projectName)
+                    .then(() => {
+                        this.successResponse();
+                    })
             }
-
+        },
+        successResponse() {
             this.projectName = '';
             this.notificate("Excelente", "O objeto foi cadastrado com sucesso", NotificationType.SUCCESS);
             this.$router.push('/projetos');

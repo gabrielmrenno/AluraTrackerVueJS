@@ -1,30 +1,30 @@
 {
-    "projetos": [
-      {
+  "projetos": [
+    {
+      "id": 1,
+      "name": "Protal Fornecedor"
+    },
+    {
+      "id": 2,
+      "name": "Portal Comissões"
+    }
+  ],
+  "tarefas": [
+    {
+      "id": 1,
+      "description": "Configuração do ambiente",
+      "project": {
         "id": 1,
-        "nome": "Alura Tracker 3.0"
-      },
-      {
-        "id": 2,
-        "nome": "ByteBank 2.0"
+        "name": "Alura Tracker 3.0"
       }
-    ],
-    "tarefas": [
-      {
+    },
+    {
+      "description": "Refatoração do vuex 4",
+      "project": {
         "id": 1,
-        "descricao": "Configuração do ambiente",
-        "projeto": {
-          "id": 1,
-          "nome": "Alura Tracker 3.0"
-        }
+        "name": "Alura Tracker 3.0"
       },
-      {
-        "descricao": "Refatoração do vuex 4",
-        "projeto": {
-          "id": 1,
-          "nome": "Alura Tracker 3.0"
-        },
-        "id": 2
-      }
-    ]
-  }
+      "id": 2
+    }
+  ]
+}
