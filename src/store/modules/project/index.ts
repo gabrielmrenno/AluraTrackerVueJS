@@ -40,7 +40,7 @@ export const project: Module<ProjectState, State> = {
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [PUT_PROJECT]({ commit }, project: IProject) {
-            return httpClient.put(`/projetos/${project.id}`, {project})
+            return httpClient.put(`/projetos/${project.id}`, project)
                 .then(response => this.commit(EDIT_PROJECT, response.data));
         },
         [DELETE_PROJECT]({ commit }, id: string) {

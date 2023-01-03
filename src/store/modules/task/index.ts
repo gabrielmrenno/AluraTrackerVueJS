@@ -33,7 +33,7 @@ export const task: Module<TaskState, State> = {
         },
         [POST_TASK]({ commit }, task: ITask) {
             return httpClient.post('/tarefas', task)
-                .then(response => commit(ADD_TASK, response.data))
+                .then(response => commit(ADD_TASK, response.data));
         },
         [PUT_TASK]({ commit }, task: ITask) {
             return httpClient.put(`/tarefas/${task.id}`, task)
@@ -41,7 +41,7 @@ export const task: Module<TaskState, State> = {
         },
         [DELETE_TASK]({ commit }, id: string) {
             return httpClient.delete(`/tarefas/${id}`)
-                .then(() => commit(DELETE_TASK, id))
+                .then(() => commit(DELETE_TASK, id));
         },
     }
 }

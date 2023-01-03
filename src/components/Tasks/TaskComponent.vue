@@ -33,25 +33,25 @@ export default defineComponent({
         StopwatchComponent,
         BoxComponent
     },
-    emits: ["onClickTask"],
     props: {
         task: {
             type: Object as PropType<ITask>,
             required: true
         }
     },
-    methods: {
-        deleteTask (id: string) {
-            this.store.dispatch(DELETE_TASK, id);
-        },
-        onClickTask () {
-            this.$emit('onClickTask', this.task);
-        }
-    },
-    setup() {
+    setup(props, { emit }) {
         const store = useStore();
+
+        function deleteTask (id: string) {
+            store.dispatch(DELETE_TASK, id);
+        }
+        function onClickTask () {
+            emit('onClickTask', props.task);
+        }
+
         return {
-            store
+            deleteTask,
+            onClickTask
         }
     }
 });

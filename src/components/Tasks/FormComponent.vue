@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import TimerComponent from "./TimerComponent.vue";
 import { useStore } from "vuex";
 import { key } from "@/store";
@@ -36,58 +36,63 @@ export default defineComponent({
     components: {
         TimerComponent
     },
-    data() {
-        return {
-            description: '',
-            projectId: '',
-            timeInSeconds: 0,
-            stopwatch: 0,
-            stopwatchRunning: false,
-            stopwatchPaused: false
-        }
-    },
-    methods: {
-        playTaks() {
-            this.stopwatchRunning = true;
-            this.stopwatchPaused = false;
-            this.stopwatch = setInterval(() => {
-                this.timeInSeconds++;
+    setup(props, { emit }) {
+        const store = useStore(key);
+
+        let stopwatch = 0;
+        
+        const projects = computed(() => store.state.project.projects);
+        
+        let stopwatchRunning = ref(false);
+        const description = ref("");
+        const projectId = ref("");
+        const timeInSeconds = ref(0);
+
+        function playTaks() {
+            stopwatchRunning.value = true;
+            stopwatch = setInterval(() => {
+                timeInSeconds.value++;
             }, 1000)
-        },
-        finishtask(timeInSeconds: number): void {
-            if (!this.projectId) {
-                this.store.commit(NOTIFICATE, {
+        }
+
+        function finishtask(): void {
+            if (!projectId.value) {
+                store.commit(NOTIFICATE, {
                     title: "Erro ao cadastrar a tarefa",
                     text: "Para cadastrar uma tarefa, ela deve estar vinculada à um projeto",
                     type: NotificationType.DANGER
                 });
-                this.stopwatchRunning = false;
-                clearInterval(this.stopwatch);
+                stopwatchRunning.value = false;
+                clearInterval(stopwatch);
                 return;
             }
-            this.$emit('onSaveTask', {
-                timeInSeconds,
-                description: this.description,
-                project: this.projects.find(eachProject => eachProject.id === this.projectId)
-            })
-            this.description = '';
-            this.projectId = '';
-            this.stopwatchRunning = false;
-            clearInterval(this.stopwatch);
-            this.timeInSeconds = 0;
-        },
-        pauseTaks() {
-            this.stopwatchRunning = false;
-            clearInterval(this.stopwatch);
+            const newTask = {
+                timeInSeconds: timeInSeconds.value,
+                description: description.value,
+                project: projects.value.find(eachProject => eachProject.id === projectId.value)
+            }
+            emit('onSaveTask', newTask)
+            description.value = '';
+            projectId.value = '';
+            stopwatchRunning.value = false;
+            clearInterval(stopwatch);
+            timeInSeconds.value = 0;
         }
-    },
-    setup() {
-        const store = useStore(key);
+
+        function pauseTaks() {
+            stopwatchRunning.value = false;
+            clearInterval(stopwatch);
+        }
 
         return {
-            store,
-            projects: computed(() => store.state.project.projects),
-            notifications: computed(() => store.state.notifications)
+            projects,
+            description,
+            projectId,
+            timeInSeconds,
+            stopwatchRunning,
+            playTaks,
+            finishtask,
+            pauseTaks
         }
     }
 })
