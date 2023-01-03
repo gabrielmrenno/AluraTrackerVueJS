@@ -39,8 +39,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
-import { DELETE_PROJECT } from '@/store/mutationsTypes';
-import { GET_PROJECTS } from '@/store/actionsTypes';
+import { DELETE_PROJECT, GET_PROJECTS } from '@/store/actionsTypes';
 
 export default defineComponent({
     name: "ProjectList",
@@ -54,7 +53,7 @@ export default defineComponent({
         store.dispatch(GET_PROJECTS);
         return {
             store,
-            projects: computed(() => store.state.projects),
+            projects: computed(() => store.state.project.projects),
         }
     }
 });

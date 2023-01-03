@@ -1,6 +1,6 @@
 <template>
-    <BoxComponent>
-        <div class="columns">
+    <BoxComponent class="task">
+        <div class="columns" @click="onClickTask">
             <div class="column is-4">
                 {{ task.description || "Tarefa sem descrição" }}
             </div>
@@ -10,7 +10,7 @@
             <div class="column">
                 <StopwatchComponent :time-in-seconds="task.timeInSeconds" />
             </div>
-            <button class="button ml-2 is-danger" @click="deleteTask(task.id)">
+            <button class="button ml-2 is-danger deleteButton" @click="deleteTask(task.id)">
                 <span class="icon is-small">
                     <i class="fas fa-trash"></i>
                 </span>
@@ -33,6 +33,7 @@ export default defineComponent({
         StopwatchComponent,
         BoxComponent
     },
+    emits: ["onClickTask"],
     props: {
         task: {
             type: Object as PropType<ITask>,
@@ -41,7 +42,10 @@ export default defineComponent({
     },
     methods: {
         deleteTask (id: string) {
-            this.store.commit(DELETE_TASK, id);
+            this.store.dispatch(DELETE_TASK, id);
+        },
+        onClickTask () {
+            this.$emit('onClickTask', this.task);
         }
     },
     setup() {
@@ -52,3 +56,9 @@ export default defineComponent({
     }
 });
 </script>
+
+<style scoped>
+    .task:hover {
+        cursor: pointer;
+    }
+</style>

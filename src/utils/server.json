@@ -7,46 +7,17 @@
     {
       "id": 2,
       "name": "Portal Comissões"
-    },
-    {
-      "name": "Plano de Estudos",
-      "id": 3
     }
   ],
   "tarefas": [
     {
-      "id": 1,
-      "description": "Configuração do ambiente",
-      "project": {
-        "id": 1,
-        "name": "Alura Tracker 3.0"
-      }
-    },
-    {
-      "description": "Refatoração do vuex 4",
-      "project": {
-        "id": 1,
-        "name": "Alura Tracker 3.0"
-      },
-      "id": 2
-    },
-    {
-      "timeInSeconds": 4,
+      "timeInSeconds": 2,
       "description": "Estudar VueJS",
       "project": {
         "id": 2,
         "name": "Portal Comissões"
       },
-      "id": 3
-    },
-    {
-      "timeInSeconds": 6,
-      "description": "Finalizar curso de VueJS",
-      "project": {
-        "id": 2,
-        "name": "Portal Comissões"
-      },
-      "id": 4
+      "id": 1
     }
   ]
 }

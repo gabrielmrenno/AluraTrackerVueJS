@@ -21,7 +21,7 @@ import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { NotificationType } from '@/interfaces/INotification';
 import { useNotifier } from '@/hooks/notifier';
-import { PATCH_PROJECT, POST_PROJECT } from '@/store/actionsTypes';
+import { PUT_PROJECT, POST_PROJECT } from '@/store/actionsTypes';
 
 export default defineComponent({
     name: "ProjectsForm",
@@ -32,7 +32,7 @@ export default defineComponent({
     },
     mounted() {
         if (this.id) {
-            const project = this.store.state.projects.find(eachProject => eachProject.id === this.id);
+            const project = this.store.state.project.projects.find(eachProject => eachProject.id === this.id);
             this.projectName = project?.name || '';
         }
     },
@@ -44,7 +44,7 @@ export default defineComponent({
     methods: {
         saveForm() {
             if (this.id) {
-                this.store.commit(PATCH_PROJECT, {
+                this.store.commit(PUT_PROJECT, {
                     id: this.id,
                     name: this.projectName
                 });

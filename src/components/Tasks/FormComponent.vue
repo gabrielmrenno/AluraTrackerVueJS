@@ -71,6 +71,7 @@ export default defineComponent({
                 project: this.projects.find(eachProject => eachProject.id === this.projectId)
             })
             this.description = '';
+            this.projectId = '';
             this.stopwatchRunning = false;
             clearInterval(this.stopwatch);
             this.timeInSeconds = 0;
@@ -85,7 +86,7 @@ export default defineComponent({
 
         return {
             store,
-            projects: computed(() => store.state.projects),
+            projects: computed(() => store.state.project.projects),
             notifications: computed(() => store.state.notifications)
         }
     }
