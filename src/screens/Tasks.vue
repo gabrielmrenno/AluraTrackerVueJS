@@ -15,7 +15,7 @@ import TaskComponent from '../components/Tasks/TaskComponent.vue'
 import BoxComponent from '../components/Tasks/BoxComponent.vue'
 import { ITask } from '../interfaces/ITask';
 import { useStore } from '@/store';
-import { ADD_TASK } from '@/store/mutationsTypes';
+import { GET_PROJECTS, GET_TASKS, POST_TASK } from '@/store/actionsTypes';
 
 export default defineComponent({
     name: 'TasksScreen',
@@ -31,11 +31,13 @@ export default defineComponent({
     },
     methods: {
         saveTaskOnList(task: ITask) {
-            this.store.commit(ADD_TASK, task);
+            this.store.dispatch(POST_TASK, task);
         }
     },
     setup () {
         const store = useStore();
+        store.dispatch(GET_TASKS);
+        store.dispatch(GET_PROJECTS);
         return {
             store,
             tasks: computed(() => store.state.tasks)

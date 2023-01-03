@@ -1,8 +1,8 @@
 import { InjectionKey } from "vue";
 import { Store, createStore, useStore as vuexUseStore } from "vuex";
-import { DEFINE_PROJECT, ADD_PROJECT, ADD_TASK, DELETE_PROJECT, DELETE_TASK, EDIT_PROJECT, EDIT_TASK, NOTIFICATE } from "./mutationsTypes";
+import { DEFINE_PROJECTS, ADD_PROJECT, ADD_TASK, DELETE_PROJECT, DELETE_TASK, EDIT_PROJECT, EDIT_TASK, NOTIFICATE, DEFINE_TASKS } from "./mutationsTypes";
 import { INotification } from "../interfaces/INotification";
-import { GET_PROJECTS, PATCH_PROJECT, POST_PROJECT } from "./actionsTypes";
+import { GET_PROJECTS, GET_TASKS, PATCH_PROJECT, POST_PROJECT, POST_TASK } from "./actionsTypes";
 
 import { IProject } from "@/interfaces/IProject";
 import { ITask } from "@/interfaces/ITask";
@@ -24,7 +24,7 @@ export const store = createStore<State>({
     },
     mutations: {
         // Projects mutations
-        [DEFINE_PROJECT](state, projects: IProject[]) {
+        [DEFINE_PROJECTS](state, projects: IProject[]) {
             state.projects = projects;
         },
         [ADD_PROJECT](state, projectName: string) {
@@ -44,8 +44,6 @@ export const store = createStore<State>({
 
         // Tasks mutations
         [ADD_TASK](state, task: ITask) {
-            task.id = new Date().toISOString();
-
             state.tasks.push(task);
         },
         [EDIT_TASK](state, task: ITask) {
@@ -54,6 +52,9 @@ export const store = createStore<State>({
         },
         [DELETE_TASK](state, id: string){
             state.tasks = state.tasks.filter(eachTask => eachTask.id != id);
+        },
+        [DEFINE_TASKS](state, tasks: ITask[]) {
+            state.tasks = tasks;
         },
 
         // Notifications
@@ -67,14 +68,14 @@ export const store = createStore<State>({
         }
     },
     actions: {
+        // Projects
         [GET_PROJECTS]({ commit }) {
-            httpClient.get('projetos')
-                .then(response => commit(DEFINE_PROJECT, response.data));
+            httpClient.get('/projetos')
+                .then(response => commit(DEFINE_PROJECTS, response.data));
         },
-        [POST_PROJECT](context, projectName: string) {
-            return httpClient.post('/projetos', {
-                name: projectName
-            })
+        [POST_PROJECT]({ commit }, projectName: string) {
+            return httpClient.post('/projetos', {name: projectName})
+                .then(() => commit(ADD_PROJECT, projectName))
         },
         [PATCH_PROJECT](context, project: IProject) {
             return httpClient.post(`/projetos/${project.id}`, {
@@ -84,6 +85,25 @@ export const store = createStore<State>({
         [DELETE_PROJECT]({ commit }, id: string) {
             return httpClient.delete(`/projetos/${id}`)
                 .then(() => commit(DELETE_PROJECT, id))
+        },
+
+        // Tasks
+        [GET_TASKS]({ commit }) {
+            httpClient.get('/tarefas')
+                .then(response => commit(DEFINE_TASKS, response.data));
+        },
+        [POST_TASK]({ commit }, task: ITask) {
+            return httpClient.post('/tarefas', task)
+                .then(response => commit(ADD_TASK, response.data))
+        },
+        [PATCH_PROJECT](context, task: ITask) {
+            return httpClient.post(`/tarefas/${task.id}`, {
+                task
+            })
+        },
+        [DELETE_PROJECT]({ commit }, id: string) {
+            return httpClient.delete(`/tarefas/${id}`)
+                .then(() => commit(DELETE_TASK, id))
         },
     }
 });
