@@ -27,8 +27,15 @@ export const task: Module<TaskState, State> = {
         },
     },
     actions: {
-        [GET_TASKS]({ commit }) {
-            httpClient.get('/tarefas')
+        [GET_TASKS]({ commit }, filter: string) {
+            let url = 'tarefas';
+
+            if(filter) {
+                url += '?description=' + filter;
+                console.log(url);
+            }
+
+            httpClient.get(url)
                 .then(response => commit(DEFINE_TASKS, response.data));
         },
         [POST_TASK]({ commit }, task: ITask) {

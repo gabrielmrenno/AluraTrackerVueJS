@@ -20,21 +20,30 @@
   "tarefas": [
     {
       "timeInSeconds": 3,
-      "description": "sdasd",
+      "description": "Estudar VueJS :)",
       "project": {
         "id": "1",
         "name": "Protal Fornecedor"
       },
-      "id": 5
+      "id": 7
     },
     {
-      "timeInSeconds": 5,
-      "description": "gfshg",
+      "timeInSeconds": 4,
+      "description": "asdasd",
       "project": {
         "id": "2",
         "name": "Portal Comissões"
       },
-      "id": 6
+      "id": 8
+    },
+    {
+      "timeInSeconds": 3,
+      "description": "Teste",
+      "project": {
+        "id": "1",
+        "name": "Protal Fornecedor"
+      },
+      "id": 9
     }
   ]
 }
